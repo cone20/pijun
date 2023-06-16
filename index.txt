@@ -1,0 +1,320 @@
+# Komande
+sudo - administrator
+
+> upusi u fajl
+>> dopisi u fajl
+
+whoami - koji korisnik je prijavljen
+w – prikaz korisnika i radnje koju vrši
+id – prikaz korisnika i id-ja grupe kojoj pripada
+last – prikaz poslednje ulogovanog korisnika
+shutdown -h [opcije now ili +10] - gasi sistem sada ili za 10 min
+date - datum
+date +%T - trenutno vreme
+echo - ispisi 
+
+cd - usmeravas se ka nekoj putanji
+pwd - ispisuje trenutnu putanju
+ls - prikazuje sve sta ima u folderu
+
+touch imena.txt - pravi imena.txt
+mkdir ime_foldera - novi folder
+rm ime_fajla - brise fajl
+rm -r ime_foldera - brise folder
+
+mv naziv_fajla novi_naziv - preimenuj naziv_fajla u novi_naziv 
+cp fajl1 fajl2 - kopira fajl1 u fajl2
+sort [opcija -r za kontra] ime_fajla - za sortiranje
+grep [opcija -i za informacije o izvrsenoj radnji] "trazena_rec" ime_fajla.txt - prolazi rec u fajlu.txt
+
+cat [opcija -n za prikaz linija pod numeracijom] ime_fajla - prikazi sadrzaj fajla 
+head [default 10 ili koliko hoces npr. -n 5] ime_fajla - prikazi prvih 10 linija fajla
+tail [default 10 ili koliko hoces npr. -n 5] ime_fajla - prikazi poslednjih 10 linija fajla
+less - prikazi ceo 'text' sadrzaj
+
+Uglavnom SUDO koristimo za sve sledece naredbe:
+
+groupadd [opcije: -g za id iliti GID, -r za sistemsku grupu, -f force radi silom] ime_grupe - pravi grupu
+iliti :
+groupadd -g -r -f ime_grupe
+groupdel ime_grupe - obrisi grupu
+
+useradd -s -c "Ime Prezime" -m "username" - napravi usera  #-c Ime-Prezime #-s da je ljudsko bice #-m kreira direktorijum za usera 
+iliti :
+useradd -s -c "Ime Prezime" -m "username" 
+userdel username - obrisi korisnika
+
+passwd username_korisnika - postavljas sifru korisniku
+
+usermod -a -G ime_grupe username_korisnika - dodajes korisnika u grupu
+
+--Dozvole za fajlove
+r - read
+w - write
+x - execute
+
+chmod 500 ime_fajla - postavlja fajl samo u rx format
+chown username_korisnika ime_fajla - dodavanje useru format fajla [moze samo da -r cita -x pokrene]
+
+zip ime.zip fajl_1 fajl_2 fajl_3
+unzip ime.zip
+
+sed -n 5p ime.txt - ispisi 5 liniju iz ime.txt
+sed -n 3,7p ime.txt - ispisi od 3 od 7 linije iz ime.txt
+sed -i '$d' ime.txt - brise poslednju liniju iz ime.txt
+
+nl -s ". " ime.txt - pravimo numerisanu listu 
+
+$ tar cvf imefajla.tar ime_foldera/ - pravljenje nove tar arhive
+$ tar xvf archive_name.tar - raspakivanje postojeće tar arhive
+$ tar tvf archive_name.tar - pogledajte postojeću tar arhivu
+
+whatis ime_komande - ako ne znas sta predstavlja komanda
+
+# Zadaci
+
+1. Kreirati korisnika Marko Markovic sa korisnickim imenom marko123. Nakon
+kreiranja korisnika, dodeliti mu lozinku “Osistemi2023%”.
+
+    sudo useradd -m -s /bin/bash -c "Marko Marković" marko123
+    sudo passwd marko123
+
+2. U grupu Informaticari ubaciti korisnika marko123.
+
+    sudo usermod -a -G informaticari marko123
+
+3. Dozvoliti samo čitanje i izvršavanje datoteke "test.txt" korisniku marko123.
+
+    sudo chmod 500 test.txt
+    sudo chown marko123 test.txt
+
+4. Dodeliti privilegije za čitanje, pisanje i izvršavanje datoteke “test.txt” ako je
+"test.txt" vlasnistvo druge grupe.
+
+    sudo chgrp informaticari test.txt
+    sudo chmod g+rwx test.txt
+
+5. Kreirati „home“ direktorijumu kreirati direktorijum „test“.
+
+    mkdir /home/test
+
+6. Kreirati tekstualni fajl „imena.txt“ sa imenima ispisanim jedno ispod drugog –
+Marko, Milan, Nikola, Marija, Anđelina, Uros. Sortirati imena u opadajucem redosledu koja se
+nalaze u tom fajlu.
+
+    sort -r imena.txt
+
+7. Kreirati tekstualni fajl „imena.txt“ sa imenima ispisanim jedno ispod drugog –
+Marko, Milan, Nikola, Marija, Anđelina. Očitati prvih 5 linija tog fajla i sačuavti rezultat u
+novom fajlu.
+
+    head -n 5 imena.txt > prvih_5_linija.txt
+
+8. Kreirati tekstualni fajl „imena.txt“ sa imenima ispisanim jedno ispod drugog –
+Marko, Milan, Nikola, Marija, Anđelina. Očitati poslednjih 5 linija tog fajla i sačuavti rezultat u
+novom fajlu.
+
+    tail -n 5 imena.txt > poslednjih_5_linija.txt
+
+9. Očitati celokupni sadržaj fajla „imena.txt“.
+
+    cat imena.txt
+
+10. Kreirati tekstualni fajl „imena.txt“ sa imenima ispisanim jedno ispod drugog –
+Marko, Milan, Nikola, Marija, Anđelina. U tom fajlu, nakon njegovog sadrzaja, dodati tekst
+"Ovo je naknadno ubaceno".
+
+    echo "Ovo je naknadno ubaceno" >> imena.txt
+
+11. Kreirati fajl "imena.txt" i u istom direktorijumu fajl "pozdravi.txt". Kopirati sadrzaj
+fajla imena.txt u fajl pozdravi.txt.
+
+    cp imena.txt pozdravi.txt
+
+12. Prikazati sve fajlove koji se nalaze u direktorijumu “test”.
+
+    ls test/
+    ls -l test/ - za detaljniji prikaz
+
+13. Kreirati direktorijum test i u tom direktorijumu kreirati fajl “predmeti.txt”.
+
+    mkdir test
+    touch test/predmeti.txt 
+
+14. Kreirati fajl “predmeti2.txt” i preko terminala ubaciti sadržaj “operativni sistemi,
+Softvfersko inženjerstvo, Metodika”.
+
+    echo "operativni sistemi, Softvfersko inženjerstvo, Metodika" > predmeti2.txt
+
+15. Pretražiti fajl “predmeti2.txt”. Pretragu izvršiti za reč “softversko”.
+
+    grep "Softvfersko" predmeti2.txt
+
+16. Sadržaj fajla “predmeti2.txt” prevesti u sva velika slova.
+
+    echo $(tr '[:lower:]' '[:upper:]' < predmeti2.txt) > predmeti2.txt
+
+17. Ispisati naziv trenutno ulogovanog korisnika u tekstualni fajl.
+
+    echo $(whoami) >> mojfajl.txt
+
+18. Ispisati naziv trenutni datum u tekstualni fajl. Zatim ispisati datum i vreme.
+
+    echo $(date) >> mojfajl.txt
+    echo $(date +%T) >> mojfajl.txt
+
+19. Napraviti .zip arhivu fajlova predmeti.txt i predmeti2.txt. Nakon kreiranja arhive,
+otpakovati arhivu.
+
+    zip ime_arhive.zip predmeti.txt predmeti2.txt
+    unzip ime_arhive.zip
+
+    Ako hocemo da otpakujemo u neki specifican folder:
+    unzip ime_arhive.zip -d putanja/do/direktorijuma
+
+20. Od linija fajla predmeti2.txt napraviti numerisanu listu.
+
+    nl -s ". " predmeti2.txt
+
+21. Očitati 5. liniju fajla predmeti2.txt. Zatim očitati opseg linija od 3. do 7.
+
+    sed -n 5p predmeti2.txt
+    sed -n 3,7p predmeti2.txt
+
+22. U fajl predmeti2.txt dodati predmet Metodika. Nakon dodavanja, izbrisati taj unos.
+
+    echo "Metodika" >> predmeti2.txt
+    sed -i '$d' predmeti2.txt
+    cat predmeti2.txt
+
+23. U fajl predmeti2.txt dodati 10 istih linija “Predmet10” pomoću petlje.
+
+    for i in {1..10}; do echo "Predmet10" >> predmeti2.txt; done
+
+24. Napraviti skriptu u kojoj se unose 3 broja i ispisuje njihov zbir u fajlu
+"predmeti2.txt".
+
+    Kreirajte novi fajl sa imenom "sabiranje.sh" u nekom direktorijumu po
+    vašem izboru.
+    Dodajte ovaj kod u fajl:
+
+    #!/bin/bash
+    # Učitajte tri broja kao ulazne parametre
+    a=$1
+    b=$2
+    c=$3
+
+    # Izračunajte zbir ta tri broja
+    sum=$(expr $a + $b + $c)
+    # Ispišite zbir u fajl "predmeti2.txt"
+    echo "Zbir brojeva $a, $b i $c je: $sum" >> predmeti2.txt
+    
+    Sačuvajte fajl i zatvorite ga.
+    Sada dajte ovu naredbu u terminalu da promenite dozvole i učinite
+    skriptu izvršivom:
+    chmod +x sabiranje.sh
+
+    pozovite skriptu ./sabiranje.sh 5 10 15
+
+25. Napraviti linux skriptu za automatsko kreiranje 10 foldera u direktorijumu “home”.
+
+    #!/bin/bash
+    # Podesi putanju direktorijuma za kreiranje foldera
+    dir="/home"
+    # Kreiraj 10 foldera sa slučajnim nazivima
+    for i in {1..10}; do
+    folder_name=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 |
+    head -n 1)
+    mkdir -p "$dir/$folder_name"
+    done
+    echo "Kreirano 10 foldera u direktorijumu $dir"
+
+26. Napraviti linux skriptu za kreiranje 10 tekstualnih fajlova u kojima pise redom tekst:
+primer 1, primer 2 ... primer 10.
+
+    #!/bin/bash
+    # Podesi putanju direktorijuma za kreiranje fajlova
+    dir="/home"
+    # Kreiraj 10 fajlova sa sadržajem "primer 1", "primer 2", itd.
+    for i in {1..10}; do
+    echo "primer $i" > "$dir/primer$i.txt"
+    done
+    echo "Kreirano 10 fajlova u direktorijumu $dir"
+
+27. Napraviti linux skriptu koja zahteva od korisnika unos celog broja. U zavisnosti od
+unetog broja, ispisati poruku o tome da li je broj pozitivan, negativan ili nula.
+
+    #!/bin/bash
+    # Zahtevaj unos broja od korisnika
+    echo "Unesite ceo broj: "
+    read broj
+    # Proveri da li je broj pozitivan, negativan ili nula
+    if [ $broj -gt 0 ]; then
+    echo "Uneti broj je pozitivan."
+    elif [ $broj -lt 0 ]; then
+    echo "Uneti broj je negativan."
+    else
+    echo "Uneti broj je nula."
+    fi
+
+28. Kreirati skriptu za unos imena i prezimena. Zatim, nakon unosa od strane korisnika,
+zahteva se unos datuma rodjenja. Ispisati koliko je korisnik star u vremenu izvrsavanja skripte.
+
+    #!/bin/bash
+    # Zahtevaj unos imena i prezimena od korisnika
+    echo "Unesite ime i prezime: "
+    read ime prezime
+    # Zahtevaj unos datuma rođenja od korisnika
+    echo "Unesite datum rođenja (format: YYYY-MM-DD): "
+    read datum_rodjenja
+
+    6
+
+    # Izračunaj starost korisnika u godinama
+    godine=$(echo "($(date +%s) - $(date -d "$datum_rodjenja" +%s)) /
+    (60*60*24*365)" | bc)
+    # Ispiši starost korisnika
+    echo "Korisnik $ime $prezime ima $godine godina."
+
+29. Kreirati skriptu za unos imena i prezimena. Zatim, nakon unosa od strane korisnika,
+zahteva se unos datuma rodjenja. Ispisati koliko je korisnik star u vremenu izvrsavanja skripte.
+Starost ispisati u godinama, mesecima i danima
+
+    #!/bin/bash
+    # Zahtevaj unos imena i prezimena od korisnika
+    echo "Unesite ime i prezime: "
+    read ime prezime
+    # Zahtevaj unos datuma rođenja od korisnika
+    echo "Unesite datum rođenja (format: YYYY-MM-DD): "
+    read datum_rodjenja
+    # Izračunaj starost korisnika u godinama, mesecima i danima
+    godine=$(echo "($(date +%s) - $(date -d "$datum_rodjenja" +%s)) /
+    (60*60*24*365)" | bc)
+    meseci=$(echo "($(date +%s) - $(date -d "$datum_rodjenja" +%s)) /
+    (60*60*24*30)" | bc)
+    dani=$(echo "($(date +%s) - $(date -d "$datum_rodjenja" +%s)) /
+    (60*60*24)" | bc)
+    # Ispiši starost korisnika
+    echo "Korisnik $ime $prezime ima $godine godina, $meseci meseci i
+    $dani dana."
+
+30. Kreirati skriptu koja traži unos korisničkog imena i lozinke, a zatim proverava da li
+se korisnik može prijaviti na sistem.
+
+    #!/bin/bash
+    # Zahtevaj unos korisničkog imena i lozinke
+    echo "Unesite korisničko ime: "
+    read username
+    echo "Unesite lozinku: "
+    read password
+    # Proveri da li je korisnik prijavljen na sistem
+    if [[ ($username == "admin") && ($password == "password123") ]]; then
+    echo "Uspešno ste se prijavili na sistem."
+    else
+    echo "Neuspela prijava. Pokušajte ponovo."
+    fi
+
+31. Instalirati i deinstalirali VLC media player preko Linunx terminala
+
+    sudo apt install vlc
+    sudo apt remove vlc
